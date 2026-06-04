@@ -310,7 +310,7 @@ export default function AllSnippets() {
               <Folder size={12} />
               <span>Archive Folders</span>
             </div>
-            <div className="flex flex-col gap-1.5 max-h-[140px] overflow-y-auto pr-1">
+            <div className="flex flex-col gap-1.5 max-h-35 overflow-y-auto pr-1">
               <button
                 onClick={() => setSelectedFolder("All")}
                 className={cn(
@@ -471,7 +471,6 @@ export default function AllSnippets() {
                           size={12}
                           fill="var(--color-accent-amber)"
                           className="stroke-accent-amber shrink-0 ml-1 animate-pulse"
-                          title="Favorited snippet"
                         />
                       )}
                     </div>
@@ -615,7 +614,6 @@ export default function AllSnippets() {
                             size={12}
                             fill="var(--color-accent-amber)"
                             className="stroke-accent-amber shrink-0"
-                            title="Favorited snippet"
                           />
                         )}
                       </div>
