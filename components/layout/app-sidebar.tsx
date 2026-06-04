@@ -35,7 +35,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     },
     {
       title: "All Snippets",
-      url: "/dashboard/tasks",
+      url: "/snippets",
       icon: <Code2 />,
     },
     {
