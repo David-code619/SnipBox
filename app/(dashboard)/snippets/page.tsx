@@ -23,7 +23,9 @@ import {
 } from "lucide-react";
 
 export default function AllSnippets() {
-  const snippets = mockSnippets;
+  const [snippets, setSnippets] = useState(() =>
+    mockSnippets.map((snippet) => ({ ...snippet })),
+  );
   const router = useRouter();
 
   // Internal visual filtering states
@@ -140,16 +142,20 @@ export default function AllSnippets() {
   };
 
   // Copy clip trigger
-  const handleCopy = (e: React.MouseEvent, id: string, code: string) => {
-    e.stopPropagation();
-    navigator.clipboard.writeText(code);
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 1500);
-
-    // Increment local counter inside context (mimicking database increment)
-    const match = snippets.find((s) => s.id === id);
-    if (match) {
-      match.copyCount = (match.copyCount || 0) + 1;
+  const handleCopy = async (e: React.MouseEvent, id: string, code: string) => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 1500);
+      setSnippets((current) =>
+        current.map((snippet) =>
+          snippet.id === id
+            ? { ...snippet, copyCount: (snippet.copyCount || 0) + 1 }
+            : snippet,
+        ),
+      );
+    } catch {
+      // surface copy failure instead of showing success
     }
   };
 
