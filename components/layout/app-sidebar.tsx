@@ -35,17 +35,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     },
     {
       title: "All Snippets",
-      url: "/dashboard/tasks",
+      url: "/snippets",
       icon: <Code2 />,
     },
     {
       title: "Favorites",
-      url: "/dashboard/upcoming",
+      url: "/favorites",
       icon: <Star />,
     },
     {
       title: "Analytics",
-      url: "/dashboard/completed",
+      url: "/analytics",
       icon: <LineChart />,
     },
     {
@@ -76,7 +76,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 tooltip={item.title}
-                isActive={pathname === item.url}
+                isActive={
+                  pathname === item.url ||
+                  (item.url === "/snippets" &&
+                    pathname.startsWith("/snippets/"))
+                }
               >
                 <Link
                   href={item.url}
