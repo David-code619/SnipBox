@@ -22,12 +22,11 @@ import {
   Sparkles,
   ArrowUpRight,
 } from "lucide-react";
-import { mockSnippets } from "@/lib/constants";
-import { DemoSnippetss } from "@/lib/constants";
+import { mockSnippets, DemoSnippetss as DemoSnippets } from "@/lib/constants";
 import { motion } from "motion/react";
 
+
 // Highly polished, robust mock snippets for empty state visualization
-const DemoSnippets = DemoSnippetss;
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -48,7 +47,7 @@ const itemVariants = {
   },
 };
 
-export function Analytics() {
+export default function Analytics() {
   const snippets = mockSnippets;
   const isVaultEmpty = snippets.length === 0;
 
