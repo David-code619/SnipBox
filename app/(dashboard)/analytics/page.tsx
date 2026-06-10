@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useMemo } from "react";
 import {
   ResponsiveContainer,
@@ -23,12 +23,11 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import { mockSnippets, DemoSnippetss as DemoSnippets } from "@/lib/constants";
-import { motion } from "motion/react";
-
+import { motion, Variants } from "motion/react";
 
 // Highly polished, robust mock snippets for empty state visualization
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -38,13 +37,44 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 15 },
   show: {
     opacity: 1,
     y: 0,
     transition: { type: "spring", stiffness: 90, damping: 14 },
   },
+};
+
+interface TooltipPayloadEntry {
+  name: string;
+  value: number | string;
+}
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: TooltipPayloadEntry[];
+  label?: string;
+}
+
+// Dynamic custom styled tooltip matching adaptive theme declared outside render
+const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-surface/95 border border-border-subtle rounded-2xl p-4 shadow-[0_8px_32px_rgba(0,0,0,0.15)] backdrop-blur-lg select-none text-on-surface">
+        <p className="font-mono text-[10px] text-on-surface-variant/70 uppercase tracking-wider mb-1.5">
+          {label}
+        </p>
+        <div className="flex items-center gap-2">
+          <div className="w-2.5 h-2.5 rounded-full bg-primary" />
+          <span className="font-display font-bold text-sm text-on-surface">
+            {payload[0].name}: {payload[0].value}
+          </span>
+        </div>
+      </div>
+    );
+  }
+  return null;
 };
 
 export default function Analytics() {
@@ -207,25 +237,6 @@ export default function Analytics() {
   }, [snippets, isVaultEmpty]);
 
   // Dynamic custom styled tooltip matching adaptive theme
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-surface/95 border border-border-subtle rounded-2xl p-4 shadow-[0_8px_32px_rgba(0,0,0,0.15)] backdrop-blur-lg select-none text-on-surface">
-          <p className="font-mono text-[10px] text-on-surface-variant/70 uppercase tracking-wider mb-1.5">
-            {label}
-          </p>
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-primary" />
-            <span className="font-display font-bold text-sm text-on-surface">
-              {payload[0].name}: {payload[0].value}
-            </span>
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
     <div
       id="analytics_viewport"
@@ -663,7 +674,7 @@ interface StatCardProps {
   detail: string;
   icon: React.ReactNode;
   accentColor: string;
-  variants: any;
+  variants: Variants;
 }
 
 function StatCard({
