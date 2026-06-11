@@ -55,10 +55,11 @@ export const mockSnippets: Snippet[] = [
 ];
 
 // Highly polished, robust mock snippets for empty state visualization
-export const DemoSnippetss = [
+export const DemoSnippetss: Snippet[] = [
   {
     id: 'demo-1',
     title: 'React Custom Fetch Hook',
+    code: 'const useFetch = (url) => {\n  // fetch code\n};',
     language: 'TypeScript',
     folder: 'Hooks',
     tags: ['react', 'fetch', 'async'],
@@ -70,6 +71,7 @@ export const DemoSnippetss = [
   {
     id: 'demo-2',
     title: 'Tailwind Bento Grid Layout',
+    code: '<div className="grid font-mono">bento grid markup</div>',
     language: 'HTML',
     folder: 'Frontend',
     tags: ['tailwind', 'css', 'grid'],
@@ -81,6 +83,7 @@ export const DemoSnippetss = [
   {
     id: 'demo-3',
     title: 'Express Rate Limiter Middleware',
+    code: 'const rateLimit = require("express-rate-limit");',
     language: 'JavaScript',
     folder: 'Backend',
     tags: ['express', 'node', 'security'],
@@ -92,6 +95,7 @@ export const DemoSnippetss = [
   {
     id: 'demo-4',
     title: 'Binary Search Implementation',
+    code: 'def binary_search(arr, val):\n    pass',
     language: 'Python',
     folder: 'Algorithms',
     tags: ['search', 'sorting', 'math'],
@@ -103,6 +107,7 @@ export const DemoSnippetss = [
   {
     id: 'demo-5',
     title: 'JWT Token Authenticator',
+    code: 'const jwt = require("jsonwebtoken");',
     language: 'TypeScript',
     folder: 'Backend',
     tags: ['auth', 'jwt', 'security'],
@@ -114,6 +119,7 @@ export const DemoSnippetss = [
   {
     id: 'demo-6',
     title: 'Rust Safe Memory Arena',
+    code: 'struct Arena {\n    buffer: Vec<u8>,\n}',
     language: 'Rust',
     folder: 'Systems',
     tags: ['rust', 'memory', 'manual'],
