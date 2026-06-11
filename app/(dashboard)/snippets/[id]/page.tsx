@@ -92,12 +92,16 @@ export default function SnippetDetails() {
     );
   }
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(snippet.code);
-    setCopied(true);
-    // Increment copy count locally for realism
-    // updateSnippet(snippet.id, { copyCount: (snippet.copyCount || 0) + 1 });
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(snippet.code);
+      setCopied(true);
+      // Increment copy count locally for realism
+      // updateSnippet(snippet.id, { copyCount: (snippet.copyCount || 0) + 1 });
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
   };
 
   const handleToggleFavorite = () => {
@@ -117,11 +121,15 @@ export default function SnippetDetails() {
 
   const isFavorite = !!snippet.isFavorite;
 
-  const handleShare = () => {
-    const shareUrl = window.location.href;
-    navigator.clipboard.writeText(shareUrl);
-    setShowShareTooltip(true);
-    setTimeout(() => setShowShareTooltip(false), 2500);
+  const handleShare = async () => {
+    try {
+      const shareUrl = window.location.href;
+      await navigator.clipboard.writeText(shareUrl);
+      setShowShareTooltip(true);
+      setTimeout(() => setShowShareTooltip(false), 2500);
+    } catch {
+      setShowShareTooltip(false);
+    }
   };
 
   const formattedFilename = snippet.title
