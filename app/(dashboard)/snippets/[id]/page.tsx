@@ -308,7 +308,7 @@ export default function SnippetDetails() {
                     parameterHints: { enabled: false },
                     suggestOnTriggerCharacters: false,
                     snippetSuggestions: "none",
-                    wordBasedSuggestions: "none",
+                    wordBasedSuggestions: "off",
                     links: false,
                     colorDecorators: false,
                     folding: true,
