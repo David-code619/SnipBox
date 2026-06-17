@@ -19,7 +19,7 @@ import {
   ChevronRight,
   AlignLeft,
 } from "lucide-react";
-import Editor from "@monaco-editor/react";
+import Editor, { type Monaco } from "@monaco-editor/react";
 import { cn } from "@/lib/utils";
 
 // Map UI languages to Monaco Editor supported language strings
@@ -40,7 +40,7 @@ const mapLanguage = (lang: string) => {
   }
 };
 
-const handleEditorBeforeMount = (monaco: any) => {
+const handleEditorBeforeMount = (monaco: Monaco) => {
   monaco.editor.defineTheme("snippetvault-dark", {
     base: "vs-dark",
     inherit: true,
@@ -313,7 +313,7 @@ export default function SnippetDetails() {
                     colorDecorators: false,
                     folding: true,
                     glyphMargin: false,
-                    lineDecoratorsWidth: 0,
+                    lineDecorationsWidth: 0,
                     scrollbar: {
                       vertical: "visible",
                       horizontal: "visible",
