@@ -39,7 +39,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {/* Navigation Categories */}
         <nav className="flex-1 flex flex-col gap-1.5">
           <NavItem
-            to="/"
+            to="/dashboard"
             icon={<LayoutDashboard size={18} />}
             label="Dashboard"
           />
