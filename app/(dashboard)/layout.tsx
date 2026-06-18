@@ -144,7 +144,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
       {/* Mobile Footer Area */}
       <nav className="md:hidden fixed bottom-0 left-0 w-full bg-sidebar-bg/95 backdrop-blur-xl border-t border-border-subtle flex justify-around items-center h-16 z-50">
-        <MobileNavItem to="/" icon={<LayoutDashboard size={18} />} label="Dashboard" />
+        <MobileNavItem to="/dashboard" icon={<LayoutDashboard size={18} />} label="Dashboard" />
         <MobileNavItem to="/snippets" icon={<Code2 size={18} />} label="Snippets" />
         <MobileNavItem to="/favorites" icon={<Star size={18} />} label="Favorites" />
         <MobileNavItem to="/analytics" icon={<LineChart size={18} />} label="Analytics" />
