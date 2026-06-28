@@ -162,6 +162,60 @@
   --spacing-xl: 32px;
   --spacing-2xl: 48px;
   --spacing-gutter: 16px;
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-collapsible-down: collapsible-down 0.2s ease-out;
+  --animate-collapsible-up: collapsible-up 0.2s ease-out;
+  --animate-in: enter 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-out: exit 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-fade-in: fadeIn 150ms ease-out;
+  --animate-fade-out: fadeOut 150ms ease-out;
+  --animate-zoom-in: zoomIn 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-zoom-out: zoomOut 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-scale-up: scaleUp 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-up: slideUp 150ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  @keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
+  }
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
+  }
+  @keyframes collapsible-down {
+    from { height: 0; }
+    to { height: var(--radix-collapsible-content-height); }
+  }
+  @keyframes collapsible-up {
+    from { height: var(--radix-collapsible-content-height); }
+    to { height: 0; }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  @keyframes zoomIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  @keyframes zoomOut {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(0.95); opacity: 0; }
+  }
+  @keyframes scaleUp {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { transform: translateY(8px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
 }
 
 @layer base {
@@ -263,4 +317,109 @@
 .light .bg-\[\#000000\]\/20,
 .light .bg-\[\#000000\]\/30 {
   background-color: rgba(15, 23, 42, 0.04) !important;
+}
+
+/* ==========================================
+   Shadcn & Radix UI Component Theme Integration
+   ========================================== */
+
+/* State-triggered Animations */
+[data-state="open"] {
+  animation-duration: 150ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-state="closed"] {
+  animation-duration: 150ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Dialog Overlay / Backdrop */
+[data-state="open"].DialogOverlay,
+[data-state="open"].DialogBackdrop,
+.DialogOverlay[data-state="open"],
+.DialogBackdrop[data-state="open"],
+[data-state="open"][class*="DialogOverlay"],
+[data-state="open"][class*="fixed inset-0 bg-black/"] {
+  animation-name: fadeIn;
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-state="closed"].DialogOverlay,
+[data-state="closed"].DialogBackdrop,
+.DialogOverlay[data-state="closed"],
+.DialogBackdrop[data-state="closed"] {
+  animation-name: fadeOut;
+}
+
+/* Dialog Content Modal */
+[data-state="open"].DialogContent,
+.DialogContent[data-state="open"],
+[data-state="open"][class*="DialogContent"],
+[data-state="open"][role="dialog"] {
+  animation-name: scaleUp;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+  border-radius: 1rem !important; /* 16px - matches rounded-2xl */
+}
+
+.light [data-state="open"].DialogContent,
+.light .DialogContent[data-state="open"],
+.light [data-state="open"][role="dialog"] {
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-state="closed"].DialogContent,
+.DialogContent[data-state="closed"] {
+  animation-name: fadeOut;
+}
+
+/* Popovers, Tooltips and Dropdown Menus */
+[data-state="open"].PopoverContent,
+[data-state="open"].DropdownMenuContent,
+.PopoverContent[data-state="open"],
+.DropdownMenuContent[data-state="open"],
+[data-state="open"][class*="PopoverContent"],
+[data-state="open"][class*="DropdownMenuContent"] {
+  animation-name: slideUp;
+  border-radius: 0.75rem !important; /* 12px - matches rounded-xl */
+}
+
+/* Style overrides for inputs and standard fields to look like handcrafted inputs */
+.DialogContent input:not([type="checkbox"]):not([type="radio"]),
+.DialogContent textarea,
+form input:not([type="checkbox"]):not([type="radio"]):not(.bg-transparent):not(.border-none):not(.absolute),
+form textarea:not(.bg-transparent):not(.border-none) {
+  background-color: var(--color-surface-container) !important;
+  border: 1px solid var(--color-border-subtle) !important;
+  border-radius: 0.75rem !important; /* rounded-xl */
+  padding: 0.75rem 1rem !important;
+  color: var(--color-on-surface) !important;
+  font-weight: 500 !important;
+  outline: 2px solid transparent !important;
+  outline-offset: 2px !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.light .DialogContent input:not([type="checkbox"]):not([type="radio"]),
+.light .DialogContent textarea,
+.light form input:not([type="checkbox"]):not([type="radio"]):not(.bg-transparent):not(.border-none):not(.absolute),
+.light form textarea:not(.bg-transparent):not(.border-none) {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(148, 163, 184, 0.2) !important;
+}
+
+.DialogContent input:not([type="checkbox"]):not([type="radio"]):focus,
+.DialogContent textarea:focus,
+form input:not([type="checkbox"]):not([type="radio"]):not(.bg-transparent):focus,
+form textarea:not(.bg-transparent):focus {
+  border-color: rgba(124, 161, 255, 0.5) !important;
+  box-shadow: 0 0 0 1px rgba(124, 161, 255, 0.2) !important;
+}
+
+.light .DialogContent input:not([type="checkbox"]):not([type="radio"]):focus,
+.light .DialogContent textarea:focus,
+.light form input:not([type="checkbox"]):not([type="radio"]):not(.bg-transparent):focus,
+.light form textarea:not(.bg-transparent):focus {
+  border-color: rgba(79, 70, 229, 0.5) !important;
+  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2) !important;
 }
