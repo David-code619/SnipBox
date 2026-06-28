@@ -10,6 +10,7 @@ import {
   Plus,
   Menu,
   Search,
+  Folder,
   Bell,
   ChevronRight,
 } from "lucide-react";
@@ -49,6 +50,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             label="All Snippets"
           />
           <NavItem
+            to="/collections"
+            icon={<Folder size={18} />}
+            label="Collections"
+          />
+          <NavItem
             to="/favorites"
             icon={<Star size={18} />}
             label="Favorites"
@@ -57,11 +63,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             to="/analytics"
             icon={<LineChart size={18} />}
             label="Analytics"
-          />
-          <NavItem
-            to="/settings"
-            icon={<Settings size={18} />}
-            label="Settings"
           />
         </nav>
 

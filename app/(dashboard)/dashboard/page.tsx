@@ -6,18 +6,20 @@ import {
   ChevronRight,
   Copy,
   Terminal,
+  Folder,
   Layers,
   Flame,
   BookOpen,
   ExternalLink,
   Cpu,
 } from "lucide-react";
-import { mockSnippets } from "@/lib/constants";
+import { mockSnippets, snippetFolders } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const snippets = mockSnippets;
+  const folders = snippetFolders;
   const router = useRouter()
   const recentSnippets = snippets.slice(0, 3);
 
@@ -128,6 +130,62 @@ export default function Dashboard() {
             <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-secondary/5 rounded-full blur-xl group-hover:bg-secondary/10 duration-300"></div>
           </div>
         </div>
+
+         {/* Secure Folder Core Section */}
+        <section id="folders_quick_access" className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Folder size={18} className="text-secondary" />
+              <h3 className="font-display text-lg font-bold text-on-surface">Secure Folders Hub</h3>
+            </div>
+            <button
+              onClick={() => router.push('/snippets?viewMode=folders')}
+              className="text-secondary text-xs font-bold hover:underline underline-offset-4 flex items-center gap-1 cursor-pointer"
+            >
+              <span>Manage Folders</span>
+              <ExternalLink size={12} />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {folders.map((fName, idx) => {
+              const snippetsInFolder = snippets.filter(s => (s.folder || 'Unsorted') === fName);
+              return (
+                <div 
+                  key={fName}
+                  id={`dashboard_folder_${fName.replace(/\s+/g, '_')}`}
+                  onClick={() => {
+                    router.push(`/snippets?folder=${encodeURIComponent(
+                      fName
+                    )}&viewMode=grid`);
+                  }}
+                  className="bg-surface border border-border-subtle rounded-xl p-4 hover:border-secondary/40 hover:bg-surface-dim transition-all duration-300 cursor-pointer flex flex-col justify-between h-27.5 group relative overflow-hidden"
+                >
+                  <div className="flex items-start gap-2.5">
+                    <div className={cn(
+                      "w-8 h-8 rounded-lg flex items-center justify-center border shrink-0",
+                      idx % 3 === 0 
+                        ? "bg-primary/10 border-primary/10 text-primary" 
+                        : idx % 3 === 1 
+                        ? "bg-secondary/10 border-secondary/10 text-secondary" 
+                        : "bg-tertiary/10 border-tertiary/10 text-tertiary"
+                    )}>
+                      <Folder size={16} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-xs font-bold text-on-surface truncate group-hover:text-secondary group-hover:underline duration-150">{fName}</h4>
+                      <p className="font-mono text-[9px] text-on-surface-variant/50 font-bold mt-0.5">{snippetsInFolder.length} items</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center text-[9px] font-mono text-on-surface-variant/30 group-hover:text-secondary duration-300 select-none">
+                    <span>EXPLORE</span>
+                    <ChevronRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
         {/* Recent Snippets with Premium Card design */}
         <section id="recent_snippets_section" className="space-y-4">
