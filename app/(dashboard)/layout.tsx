@@ -138,7 +138,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         
 
         {/* Dynamic Content Frame */}
-        <div className="flex-1 overflow-y-auto isolate custom-scrollbar relative">
+        <div className="flex-1 overflow-y-auto custom-scrollbar relative">
           {children}
         </div>
       </main>
