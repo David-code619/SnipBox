@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { mockSnippets, snippetFolders } from "@/lib/constants";
 import { cn } from '@/lib/utils';
@@ -320,14 +321,18 @@ export default function Collections() {
   return (
     <div className="max-w-7xl mx-auto p-6 sm:p-8 space-y-8 animate-fade-in relative">
       
-      {/* Search Header row as represented in the design header */}
-      <div className="flex flex-col gap-6 md:flex-row md:items-center justify-between pb-6 border-b border-border/20">
+      {/* Search Header row */}
+      <div className="flex flex-col gap-6 md:flex-row md:items-end justify-between pb-8">
         <div className="flex-1 min-w-0">
-          <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight mt-1">
-            Folders & Collections
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-1 h-8 rounded-full bg-gradient-to-b from-primary to-secondary" />
+            <span className="font-mono text-[10px] font-bold text-primary/80 uppercase tracking-widest bg-primary/8 px-2.5 py-1 rounded-full border border-primary/10">Workspace</span>
+          </div>
+          <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight">
+            Your Collections
           </h2>
-          <p className="text-sm text-on-surface-variant/75 mt-1 leading-relaxed">
-            Manage your snippet taxonomy and logical groupings.
+          <p className="text-sm text-on-surface-variant/60 mt-1.5 leading-relaxed max-w-lg">
+            Curate, organize, and browse your snippet libraries — grouped by project, language, or workflow.
           </p>
         </div>
 
@@ -346,7 +351,7 @@ export default function Collections() {
             </select>
           </div>
 
-          {/* Grid/List selector mimicking UI buttons on the far right */}
+          {/* Grid/List selector */}
           <div className="bg-surface-container p-1 rounded-xl flex border border-border-subtle shrink-0">
             <button 
               onClick={() => setViewLayout('grid')}
@@ -375,6 +380,9 @@ export default function Collections() {
           </div>
         </div>
       </div>
+
+      {/* Decorative separator */}
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-border-subtle to-transparent -mt-2 mb-2" />
 
       {/* Main Grid or List of collection cards */}
       <div className={cn(viewLayout === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start" : "flex flex-col gap-3 w-full")}>
@@ -1079,38 +1087,42 @@ export default function Collections() {
       </Dialog>
 
 
-      {/* Creation Modal Form overlay */}
-      {isAdding && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center md:pl-64 p-4 z-50 animate-fade-in" onClick={() => setIsAdding(false)}>
+      {/* Creation Modal Form overlay - portaled to body to escape isolate stacking context */}
+      {isAdding && createPortal(
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-fade-in" onClick={() => setIsAdding(false)}>
           <form 
             onSubmit={handleCreateCollection}
             onClick={(e) => e.stopPropagation()}
-            className="bg-surface w-full max-w-lg rounded-2xl border border-border-subtle p-6 sm:p-8 space-y-5 animate-scale-up select-none shadow-2xl"
+            className="bg-surface w-full max-w-md rounded-2xl border border-border-subtle overflow-hidden animate-scale-up select-none shadow-2xl"
           >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-primary/15 border border-primary/25 text-primary flex items-center justify-center">
-                  <FolderPlus size={18} />
+            {/* Header */}
+            <div className="px-6 pt-6 pb-4 flex items-start justify-between">
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/15 border border-primary/20 text-primary flex items-center justify-center shrink-0">
+                  <FolderPlus size={19} className="stroke-[1.75]" />
                 </div>
                 <div>
-                  <h3 className="font-display text-sm font-bold text-on-surface">Create New Collection</h3>
-                  <p className="text-[10px] text-on-surface-variant/50 font-mono mt-0.5">ESTABLISHING SUITE DIRECTORY</p>
+                  <h3 className="font-display text-base font-bold text-on-surface">New Collection</h3>
+                  <p className="text-[11px] text-on-surface-variant/50 mt-0.5">Create a new snippet group</p>
                 </div>
               </div>
               <button 
                 type="button" 
                 onClick={() => setIsAdding(false)}
-                className="p-1 hover:bg-surface-container rounded-lg text-on-surface-variant/60 cursor-pointer"
+                className="p-1.5 hover:bg-surface-container rounded-lg text-on-surface-variant/50 hover:text-on-surface transition-colors cursor-pointer mt-0.5"
               >
                 <X size={16} />
               </button>
             </div>
 
+            {/* Separator */}
+            <div className="h-px bg-border-subtle/60 mx-6" />
+
             {/* Input fields */}
-            <div className="space-y-4 pt-1">
+            <div className="px-6 py-5 space-y-5">
               {/* Title */}
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-mono uppercase tracking-wider text-on-surface-variant/60 font-bold">Collection Title</label>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-on-surface/80">Collection name</label>
                 <input 
                   type="text"
                   maxLength={30}
@@ -1119,49 +1131,50 @@ export default function Collections() {
                     setNewFolderName(e.target.value);
                     setFolderError('');
                   }}
-                  placeholder="e.g. Server Configurations"
-                  className="w-full bg-surface-container text-xs border border-border-subtle rounded-xl px-4 py-3 placeholder-on-surface-variant/35 text-on-surface font-semibold focus:border-primary/50 focus:outline-none transition-all"
+                  placeholder="e.g. React Hooks, API Utils..."
+                  className="w-full bg-surface-container text-sm border border-border-subtle rounded-xl px-4 py-2.5 placeholder-on-surface-variant/35 text-on-surface font-medium focus:border-primary/50 focus:outline-none transition-all"
                   autoFocus
                 />
                 {folderError && (
-                  <div className="flex items-center gap-1.5 text-error text-[10px] font-mono mt-1">
-                    <AlertCircle size={11} className="shrink-0" />
+                  <div className="flex items-center gap-1.5 text-error text-[11px] font-medium mt-1">
+                    <AlertCircle size={12} className="shrink-0" />
                     <span>{folderError}</span>
                   </div>
                 )}
               </div>
 
               {/* Description */}
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-mono uppercase tracking-wider text-on-surface-variant/60 font-bold">Purpose Description</label>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-on-surface/80">Description <span className="text-on-surface-variant/40 font-normal">(optional)</span></label>
                 <textarea 
                   value={newFolderDesc}
                   onChange={(e) => setNewFolderDesc(e.target.value)}
-                  placeholder="Define collection taxonomy parameters (re-index parameters etc.)"
+                  placeholder="What kind of snippets will this collection hold?"
                   maxLength={160}
                   rows={3}
-                  className="w-full bg-surface-container text-xs border border-border-subtle rounded-xl px-4 py-3 placeholder-on-surface-variant/35 text-on-surface font-medium focus:border-primary/50 focus:outline-none transition-all resize-none"
+                  className="w-full bg-surface-container text-sm border border-border-subtle rounded-xl px-4 py-2.5 placeholder-on-surface-variant/35 text-on-surface font-medium focus:border-primary/50 focus:outline-none transition-all resize-none leading-relaxed"
                 />
               </div>
 
-              {/* Theme Options */}
-              <div className="space-y-2">
-                <label className="text-[11px] font-mono uppercase tracking-wider text-on-surface-variant/60 font-bold">Theme Visualizer Pin</label>
-                <div className="flex gap-2.5">
+              {/* Theme color */}
+              <div className="space-y-2.5">
+                <label className="text-xs font-semibold text-on-surface/80">Theme color</label>
+                <div className="flex gap-3">
                   {COLOR_OPTIONS.map((opt) => (
                     <button
                       key={opt.value}
                       type="button"
                       onClick={() => setNewFolderColor(opt.value)}
                       className={cn(
-                        "w-7 h-7 rounded-full border-2 transition-all flex items-center justify-center relative cursor-pointer",
+                        "w-8 h-8 rounded-full border-2 transition-all flex items-center justify-center relative cursor-pointer hover:scale-105",
                         opt.bg,
-                        opt.border,
-                        newFolderColor === opt.value ? "border-primary scale-110 shadow-lg" : "border-transparent"
+                        newFolderColor === opt.value ? "border-primary scale-110 shadow-lg shadow-primary/15" : "border-border-subtle/50 hover:border-on-surface-variant/30"
                       )}
                       title={opt.label}
                     >
-                      {newFolderColor === opt.value && <div className={cn("w-2 h-2 rounded-full", opt.bg.replace('/10', ''))} />}
+                      {newFolderColor === opt.value && (
+                        <Check size={14} className={cn(opt.text)} />
+                      )}
                     </button>
                   ))}
                 </div>
@@ -1169,57 +1182,62 @@ export default function Collections() {
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end gap-2.5 pt-4">
+            <div className="px-6 pb-6 pt-1 flex justify-end gap-2.5">
               <button
                 type="button"
                 onClick={() => setIsAdding(false)}
-                className="px-4 py-2.5 hover:bg-surface-container-high rounded-xl text-xs font-semibold text-on-surface-variant border border-transparent cursor-pointer"
+                className="px-4 py-2.5 hover:bg-surface-container-high rounded-xl text-xs font-semibold text-on-surface-variant border border-border-subtle/60 cursor-pointer transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-5 py-2.5 bg-[#7ca1ff] hover:brightness-105 active:scale-[0.98] text-workspace-bg rounded-xl text-xs font-bold transition-all shadow-[0_4px_16px_rgba(124,161,255,0.12)] cursor-pointer"
+                className="px-5 py-2.5 bg-primary hover:bg-primary-hover active:scale-[0.98] text-on-primary rounded-xl text-xs font-bold transition-all shadow-sm shadow-primary/15 cursor-pointer"
               >
-                Assemble Collection
+                Create Collection
               </button>
             </div>
           </form>
-        </div>
+        </div>,
+        document.body
       )}
 
-      {/* Editing / Renaming Modal Form overlay */}
-      {editingCollectionName && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center md:pl-64 p-4 z-50 animate-fade-in" onClick={() => setEditingCollectionName(null)}>
+      {/* Editing / Renaming Modal Form overlay - portaled to body to escape isolate stacking context */}
+      {editingCollectionName && createPortal(
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-fade-in" onClick={() => setEditingCollectionName(null)}>
           <form 
             onSubmit={(e) => handleUpdateCollection(e, editingCollectionName)}
             onClick={(e) => e.stopPropagation()}
-            className="bg-surface w-full max-w-lg rounded-2xl border border-border-subtle p-6 sm:p-8 space-y-5 animate-scale-up select-none shadow-2xl"
+            className="bg-surface w-full max-w-md rounded-2xl border border-border-subtle overflow-hidden animate-scale-up select-none shadow-2xl"
           >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-secondary/15 border border-secondary/25 text-secondary flex items-center justify-center animate-pulse">
-                  <Edit3 size={18} />
+            {/* Header */}
+            <div className="px-6 pt-6 pb-4 flex items-start justify-between">
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-secondary/20 to-primary/15 border border-secondary/20 text-secondary flex items-center justify-center shrink-0">
+                  <Edit3 size={19} className="stroke-[1.75]" />
                 </div>
                 <div>
-                  <h3 className="font-display text-sm font-bold text-on-surface">Rename Collection Specs</h3>
-                  <p className="text-[10px] text-on-surface-variant/50 font-mono mt-0.5">MODIFYING ARCHIVE INDEX</p>
+                  <h3 className="font-display text-base font-bold text-on-surface">Edit Collection</h3>
+                  <p className="text-[11px] text-on-surface-variant/50 mt-0.5">Update name, description, or theme</p>
                 </div>
               </div>
               <button 
                 type="button" 
                 onClick={() => setEditingCollectionName(null)}
-                className="p-1 hover:bg-surface-container rounded-lg text-on-surface-variant/60 cursor-pointer"
+                className="p-1.5 hover:bg-surface-container rounded-lg text-on-surface-variant/50 hover:text-on-surface transition-colors cursor-pointer mt-0.5"
               >
                 <X size={16} />
               </button>
             </div>
 
+            {/* Separator */}
+            <div className="h-px bg-border-subtle/60 mx-6" />
+
             {/* Input fields */}
-            <div className="space-y-4 pt-1">
+            <div className="px-6 py-5 space-y-5">
               {/* Title */}
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-mono uppercase tracking-wider text-on-surface-variant/60 font-bold">New Title</label>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-on-surface/80">Collection name</label>
                 <input 
                   type="text"
                   maxLength={30}
@@ -1228,49 +1246,50 @@ export default function Collections() {
                     setRenameValue(e.target.value);
                     setRenameError('');
                   }}
-                  placeholder="e.g. Server Configurations"
-                  className="w-full bg-surface-container text-xs border border-border-subtle rounded-xl px-4 py-3 placeholder-on-surface-variant/35 text-on-surface font-semibold focus:border-secondary/40 focus:outline-none transition-all"
+                  placeholder="e.g. React Hooks, API Utils..."
+                  className="w-full bg-surface-container text-sm border border-border-subtle rounded-xl px-4 py-2.5 placeholder-on-surface-variant/35 text-on-surface font-medium focus:border-secondary/40 focus:outline-none transition-all"
                   autoFocus
                 />
                 {renameError && (
-                  <div className="flex items-center gap-1.5 text-error text-[10px] font-mono mt-1">
-                    <AlertCircle size={11} className="shrink-0" />
+                  <div className="flex items-center gap-1.5 text-error text-[11px] font-medium mt-1">
+                    <AlertCircle size={12} className="shrink-0" />
                     <span>{renameError}</span>
                   </div>
                 )}
               </div>
 
               {/* Description */}
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-mono uppercase tracking-wider text-on-surface-variant/60 font-bold">Purpose Description</label>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-on-surface/80">Description <span className="text-on-surface-variant/40 font-normal">(optional)</span></label>
                 <textarea 
                   value={renameDescValue}
                   onChange={(e) => setRenameDescValue(e.target.value)}
-                  placeholder="Define collection taxonomy parameters (re-index parameters etc.)"
+                  placeholder="What kind of snippets does this collection hold?"
                   maxLength={160}
                   rows={3}
-                  className="w-full bg-surface-container text-xs border border-border-subtle rounded-xl px-4 py-3 placeholder-on-surface-variant/35 text-on-surface font-medium focus:border-secondary/40 focus:outline-none transition-all resize-none"
+                  className="w-full bg-surface-container text-sm border border-border-subtle rounded-xl px-4 py-2.5 placeholder-on-surface-variant/35 text-on-surface font-medium focus:border-secondary/40 focus:outline-none transition-all resize-none leading-relaxed"
                 />
               </div>
 
-              {/* Theme Options */}
-              <div className="space-y-2">
-                <label className="text-[11px] font-mono uppercase tracking-wider text-on-surface-variant/60 font-bold">Theme Visualizer Pin</label>
-                <div className="flex gap-2.5">
+              {/* Theme color */}
+              <div className="space-y-2.5">
+                <label className="text-xs font-semibold text-on-surface/80">Theme color</label>
+                <div className="flex gap-3">
                   {COLOR_OPTIONS.map((opt) => (
                     <button
                       key={opt.value}
                       type="button"
                       onClick={() => setRenameColorValue(opt.value)}
                       className={cn(
-                        "w-7 h-7 rounded-full border-2 transition-all flex items-center justify-center relative cursor-pointer",
+                        "w-8 h-8 rounded-full border-2 transition-all flex items-center justify-center relative cursor-pointer hover:scale-105",
                         opt.bg,
-                        opt.border,
-                        renameColorValue === opt.value ? "border-secondary scale-110 shadow-lg" : "border-transparent"
+                        renameColorValue === opt.value ? "border-secondary scale-110 shadow-lg shadow-secondary/15" : "border-border-subtle/50 hover:border-on-surface-variant/30"
                       )}
                       title={opt.label}
                     >
-                      {renameColorValue === opt.value && <div className={cn("w-2 h-2 rounded-full", opt.bg.replace('/10', ''))} />}
+                      {renameColorValue === opt.value && (
+                        <Check size={14} className={cn(opt.text)} />
+                      )}
                     </button>
                   ))}
                 </div>
@@ -1278,19 +1297,19 @@ export default function Collections() {
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end gap-2.5 pt-4">
+            <div className="px-6 pb-6 pt-1 flex justify-end gap-2.5">
               <button
                 type="button"
                 onClick={() => setEditingCollectionName(null)}
-                className="px-4 py-2.5 hover:bg-surface-container-high rounded-xl text-xs font-semibold text-on-surface-variant border border-transparent cursor-pointer"
+                className="px-4 py-2.5 hover:bg-surface-container-high rounded-xl text-xs font-semibold text-on-surface-variant border border-border-subtle/60 cursor-pointer transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-5 py-2.5 bg-secondary hover:brightness-110 active:scale-[0.98] text-white rounded-xl text-xs font-bold transition-all shadow-[0_4px_16px_rgba(99,102,241,0.12)] cursor-pointer"
+                className="px-5 py-2.5 bg-secondary hover:brightness-110 active:scale-[0.98] text-white rounded-xl text-xs font-bold transition-all shadow-sm shadow-secondary/15 cursor-pointer"
               >
-                Save Meta Config
+                Save Changes
               </button>
             </div>
           </form>
