@@ -67,12 +67,11 @@ export default function SignIn() {
     defaultValues: { email: "", password: "" },
   });
 
-  const onLoginSubmit = (data: LoginSchema) => {
+  const onLoginSubmit = () => {
     setLoading(true);
     setMessage(null);
     setTimeout(() => {
       try {
-        // login(data.email);
         setLoading(false);
         router.push("/dashboard");
       } catch {
@@ -109,7 +108,7 @@ export default function SignIn() {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-outline-variant)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-outline-variant)_1px,transparent_1px)] bg-size-[32px_32px] pointer-events-none opacity-[0.08] dark:opacity-[0.14]" />
 
       {/* Highly fluid interactive ambient glowing orbs */}
-      <div className="absolute top-[-10%] left-[20%] w-125 h125 bg-primary/8 dark:bg-primary/4 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-[-10%] left-[20%] w-125 h-125 bg-primary/8 dark:bg-primary/4 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[10%] w-150 h-150 bg-secondary/12 dark:bg-secondary/4 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-[40%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-87.5 h-87.5 bg-indigo-500/8 dark:bg-indigo-500/3 rounded-full blur-[100px] pointer-events-none" />
 

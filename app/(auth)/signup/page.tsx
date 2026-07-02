@@ -76,11 +76,10 @@ export default function SignUp() {
     defaultValues: { email: "", password: "", confirmPassword: "" },
   });
 
-  const onSignUpSubmit = (data: SignUpSchema) => {
+  const onSignUpSubmit = () => {
     setLoading(true);
     setMessage(null);
     setTimeout(() => {
-    //   login(data.email);
       setLoading(false);
       setMessage({
         type: "success",

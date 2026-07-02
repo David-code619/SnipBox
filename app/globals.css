@@ -387,14 +387,14 @@
 }
 
 /* Style overrides for inputs and standard fields to look like handcrafted inputs */
-.DialogContent input:not([type="checkbox"]):not([type="radio"]),
-.DialogContent textarea,
-form input:not([type="checkbox"]):not([type="radio"]):not(.bg-transparent):not(.border-none):not(.absolute),
-form textarea:not(.bg-transparent):not(.border-none) {
+.DialogContent input:not([type="checkbox"]):not([type="radio"]):not([class*="pl-"]):not([class*="pr-"]):not([class*="px-"]):not([class*="py-"]):not([class*="p-"]),
+.DialogContent textarea:not([class*="pl-"]):not([class*="pr-"]):not([class*="px-"]):not([class*="py-"]):not([class*="p-"]),
+form input:not([type="checkbox"]):not([type="radio"]):not(.bg-transparent):not(.border-none):not(.absolute):not([class*="pl-"]):not([class*="pr-"]):not([class*="px-"]):not([class*="py-"]):not([class*="p-"]),
+form textarea:not(.bg-transparent):not(.border-none):not([class*="pl-"]):not([class*="pr-"]):not([class*="px-"]):not([class*="py-"]):not([class*="p-"]) {
   background-color: var(--color-surface-container) !important;
   border: 1px solid var(--color-border-subtle) !important;
   border-radius: 0.75rem !important; /* rounded-xl */
-  padding: 0.75rem 1rem !important;
+  padding: 0.75rem 0.75rem !important;
   color: var(--color-on-surface) !important;
   font-weight: 500 !important;
   outline: 2px solid transparent !important;
