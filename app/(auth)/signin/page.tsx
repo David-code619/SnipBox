@@ -6,6 +6,7 @@ import Link from "next/link";
 import * as z from "zod";
 import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client"; 
 import {
   Terminal,
   Eye,
