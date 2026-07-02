@@ -13,15 +13,18 @@ datasource db {
 }
 
 model User {
-  id            String    @id
+  id            String     @id
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean    @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   sessions      Session[]
   accounts      Account[]
+  snippets      Snippet[]
+  folders       Folder[]
+  favorites     Favorite[]
 
   @@unique([email])
   @@map("user")
@@ -73,4 +76,114 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+// =====================================
+// FOLDER
+// =====================================
+
+model Folder {
+  id String @id @default(cuid())
+
+  name        String
+  description String?
+
+  color String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  snippets Snippet[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+// =====================================
+// SNIPPET
+// =====================================
+
+model Snippet {
+  id String @id @default(cuid())
+
+  title       String
+  description String?
+
+  code String @db.Text
+
+  language String
+
+  isPinned Boolean @default(false)
+
+  copyCount Int @default(0)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  folderId String?
+  folder   Folder? @relation(fields: [folderId], references: [id], onDelete: SetNull)
+
+  tags      SnippetTag[]
+  favorites Favorite[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([folderId])
+  @@index([language])
+  @@index([createdAt])
+  @@index([updatedAt])
+}
+
+// =====================================
+// TAG
+// =====================================
+
+model Tag {
+  id String @id @default(cuid())
+
+  name String @unique
+
+  createdAt DateTime @default(now())
+
+  snippets SnippetTag[]
+}
+
+// =====================================
+// MANY TO MANY
+// =====================================
+
+model SnippetTag {
+  snippetId String
+  tagId     String
+
+  snippet Snippet @relation(fields: [snippetId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([snippetId, tagId])
+  @@index([tagId])
+}
+
+// =====================================
+// FAVORITES
+// =====================================
+
+model Favorite {
+  id String @id @default(cuid())
+
+  userId    String
+  snippetId String
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  snippet Snippet @relation(fields: [snippetId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, snippetId])
+  @@index([userId])
+  @@index([snippetId])
 }
