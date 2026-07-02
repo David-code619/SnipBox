@@ -325,7 +325,7 @@ export default function Collections() {
       <div className="flex flex-col gap-6 md:flex-row md:items-end justify-between pb-8">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-1 h-8 rounded-full bg-gradient-to-b from-primary to-secondary" />
+            <div className="w-1 h-8 rounded-full bg-linear-to-b from-primary to-secondary" />
             <span className="font-mono text-[10px] font-bold text-primary/80 uppercase tracking-widest bg-primary/8 px-2.5 py-1 rounded-full border border-primary/10">Workspace</span>
           </div>
           <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight">
@@ -382,7 +382,7 @@ export default function Collections() {
       </div>
 
       {/* Decorative separator */}
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-border-subtle to-transparent -mt-2 mb-2" />
+      <div className="h-px w-full bg-linear-to-r from-transparent via-border-subtle to-transparent -mt-2 mb-2" />
 
       {/* Main Grid or List of collection cards */}
       <div className={cn(viewLayout === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start" : "flex flex-col gap-3 w-full")}>
@@ -397,7 +397,7 @@ export default function Collections() {
               setFolderError('');
               setIsAdding(true);
             }}
-            className="border-2 border-dashed border-border-subtle rounded-2xl p-6 flex flex-col items-center justify-center h-[280px] bg-surface-container-lowest hover:bg-surface-container-low hover:border-primary/40 transition-all duration-300 group cursor-pointer"
+            className="border-2 border-dashed border-border-subtle rounded-2xl p-6 flex flex-col items-center justify-center h-70 bg-surface-container-lowest hover:bg-surface-container-low hover:border-primary/40 transition-all duration-300 group cursor-pointer"
           >
             <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-surface-container border border-border-subtle text-on-surface-variant/60 group-hover:bg-primary/10 group-hover:text-primary group-hover:border-primary/30 transition-all duration-300 shadow-sm mb-4">
               <FolderPlus size={20} className="stroke-[1.75]" />
@@ -1098,7 +1098,7 @@ export default function Collections() {
             {/* Header */}
             <div className="px-6 pt-6 pb-4 flex items-start justify-between">
               <div className="flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/15 border border-primary/20 text-primary flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-primary/20 to-secondary/15 border border-primary/20 text-primary flex items-center justify-center shrink-0">
                   <FolderPlus size={19} className="stroke-[1.75]" />
                 </div>
                 <div>
@@ -1213,7 +1213,7 @@ export default function Collections() {
             {/* Header */}
             <div className="px-6 pt-6 pb-4 flex items-start justify-between">
               <div className="flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-secondary/20 to-primary/15 border border-secondary/20 text-secondary flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-secondary/20 to-primary/15 border border-secondary/20 text-secondary flex items-center justify-center shrink-0">
                   <Edit3 size={19} className="stroke-[1.75]" />
                 </div>
                 <div>
@@ -1313,7 +1313,8 @@ export default function Collections() {
               </button>
             </div>
           </form>
-        </div>
+        </div>,
+        document.body
       )}
 
     </div>
